@@ -21,6 +21,9 @@ build-docker:
 		-f tools/image/Dockerfile \
 		--target ucsd_robocar2 \
 		--ssh default=${SSH_AUTH_SOCK} \
+        --build-arg BASE_IMAGE=ros:jazzy-ros-base-noble \
+		--build-arg ROS_DISTRO=jazzy \
+		--build-arg ROS_SOURCE=jazzy \
 		-t $${IMG_NAME} .
 
 .PHONY: docker-cache-clean
@@ -29,6 +32,7 @@ docker-cache-clean:
 
 .PHONY: session
 session:
+	@IMG_NAME="${IMG_NAME}"
 	@CONT_NAME="${CONT_NAME}"
 	@RUNTIME="${RUNTIME}"
 	@TAG="${TAG}"
@@ -39,7 +43,9 @@ session:
 	if [ "${TAG}" == "" ]; then
 		TAG="stable"
 	fi
-	IMG_NAME=ghcr.io/ucsd-ecemae-148/ucsd_robocar:$${TAG}
+	if [ "${IMG_NAME}" == "" ]; then
+		IMG_NAME="ghcr.io/ucsd-ecemae-148/ucsd_robocar:$${TAG}"
+	fi
 	if [ "${RUNTIME}" = "nvidia" ]; then
 		echo "RUNTIME is set to nvidia"
 		xhost +

@@ -1,17 +1,17 @@
-####################################################################################################################################################
-# Setup environment for supporting ROS2-jazzy
-####################################################################################################################################################
-
+ARG BASE_IMAGE=ros:jazzy-ros-base-noble
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------
 # Getting Base image (ubuntu 22.04)
 # --------------------------------------------------------------------------------------------------------------------------------------------------
-FROM ros:jazzy-ros-base-noble as ucsd_robocar2_base
+FROM $BASE_IMAGE as ucsd_robocar2_base
+
+ARG ROS_DISTRO
+ARG ROS_SOURCE
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------
 # Setting environment variable
 # --------------------------------------------------------------------------------------------------------------------------------------------------
-ENV ROS_DISTRO jazzy
+ENV ROS_DISTRO=${ROS_DISTRO}
 
 
 ####################################################################################################################################################
@@ -46,31 +46,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # install ros2 packages
 # --------------------------------------------------------------------------------------------------------------------------------------------------
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-jazzy-desktop \
-    # ros-jazzy-ros1-bridge \
-    ros-jazzy-realsense2-camera \
-    ros-jazzy-realsense2-camera-msgs \
-    ros-jazzy-librealsense2 \ 
-    ros-jazzy-message-filters \
-    ros-jazzy-image-transport \
-    ros-jazzy-sick-scan-xd \
-    ros-jazzy-teleop-twist-joy \
-    ros-jazzy-joy \
-    ros-jazzy-joy-teleop \
-    ros-jazzy-rviz-default-plugins \
-    ros-jazzy-rviz-rendering \
-    ros-jazzy-rosbag2 \
-    ros-jazzy-robot-localization \
-    ros-jazzy-slam-toolbox \
-    ros-jazzy-ackermann-msgs \
-    ros-jazzy-serial-driver \
-    ros-jazzy-depthai-ros \
+    ros-$ROS_DISTRO-desktop \
+    ros-$ROS_DISTRO-realsense2-camera \
+    ros-$ROS_DISTRO-realsense2-camera-msgs \
+    ros-$ROS_DISTRO-librealsense2 \ 
+    ros-$ROS_DISTRO-message-filters \
+    ros-$ROS_DISTRO-image-transport \
+    ros-$ROS_DISTRO-sick-scan-xd \
+    ros-$ROS_DISTRO-teleop-twist-joy \
+    ros-$ROS_DISTRO-joy \
+    ros-$ROS_DISTRO-joy-teleop \
+    ros-$ROS_DISTRO-rviz-default-plugins \
+    ros-$ROS_DISTRO-rviz-rendering \
+    ros-$ROS_DISTRO-rosbag2 \
+    ros-$ROS_DISTRO-robot-localization \
+    ros-$ROS_DISTRO-slam-toolbox \
+    ros-$ROS_DISTRO-ackermann-msgs \
+    ros-$ROS_DISTRO-serial-driver \
+    ros-$ROS_DISTRO-depthai-ros \
     && rm -rf /var/lib/apt/lists/*
 
 # Not sure if these are needed...
-#    ros-jazzy-rviz2 \
-#    ros-jazzy-rviz-common \
-#    ros-jazzy-realsense2-camera-description \
+#    ros-$ROS_DISTRO-rviz2 \
+#    ros-$ROS_DISTRO-rviz-common \
+#    ros-$ROS_DISTRO-realsense2-camera-description \
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------
 # install useful packages
@@ -151,7 +150,7 @@ RUN mkdir -p /home/projects/sensor2_ws/src/lidars/ld06/ros2/src
 #RUN [\
 #    "/bin/bash", \
 #    "-c", \
-#    "source /opt/ros/jazzy/setup.bash && \
+#    "source /opt/ros/$ROS_DISTRO/setup.bash && \
 #    colcon build && \
 #    source install/setup.bash"\
 #    ]
@@ -165,7 +164,7 @@ RUN mkdir -p /home/projects/sensor2_ws/src/lidars/ld06/ros2/src
 # RUN [\
 #     "/bin/bash", \
 #     "-c", \
-#     "source /opt/ros/jazzy/setup.bash && \
+#     "source /opt/ros/$ROS_DISTRO/setup.bash && \
 #     colcon build && \
 #     source install/setup.bash"\
 #     ]
@@ -179,7 +178,7 @@ RUN mkdir -p /home/projects/sensor2_ws/src/lidars/ld06/ros2/src
 # RUN [\
 #     "/bin/bash", \
 #     "-c", \
-#     "source /opt/ros/jazzy/setup.bash && \
+#     "source /opt/ros/$ROS_DISTRO/setup.bash && \
 #     colcon build && \
 #     source install/setup.bash"\
 #     ]
@@ -193,7 +192,7 @@ RUN mkdir -p /home/projects/sensor2_ws/src/lidars/ld06/ros2/src
 # RUN [\
 #     "/bin/bash", \
 #     "-c", \
-#     "source /opt/ros/jazzy/setup.bash && \
+#     "source /opt/ros/$ROS_DISTRO/setup.bash && \
 #     colcon build && \
 #     source install/setup.bash"\
 #     ]
@@ -207,7 +206,7 @@ WORKDIR /home/projects/sensor2_ws/src/lidars/ld06/ros2
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash"\
@@ -232,7 +231,7 @@ RUN echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | tee /etc/ude
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash" \
@@ -263,7 +262,7 @@ WORKDIR /home/projects/sensor2_ws/src/imu/artemis_openlog
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash"\
@@ -283,7 +282,7 @@ WORKDIR /home/projects/sensor2_ws/src/gps/ublox
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash"\
@@ -302,11 +301,11 @@ RUN git clone --branch foxy-devel https://github.com/f1tenth/ackermann_mux.git
 RUN git clone --branch humble-devel https://github.com/f1tenth/teleop_tools.git
 WORKDIR /home/projects/sensor2_ws/src/vesc
 RUN apt-get update && apt-get install \
-    ros-jazzy-asio-cmake-module
+    ros-$ROS_DISTRO-asio-cmake-module
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash"\
@@ -345,7 +344,7 @@ WORKDIR /home/projects/rosboard_ws
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     rosdep update && rosdep install --from-path src --ignore-src -y && \
     colcon build && \
     source install/setup.bash"\
@@ -376,7 +375,7 @@ RUN [\
 # RUN [\
 #     "/bin/bash", \
 #     "-c", \
-#     "source /opt/ros/jazzy/setup.bash && \
+#     "source /opt/ros/$ROS_DISTRO/setup.bash && \
 #     rosdep update && rosdep install --from-path src --ignore-src -y && \
 #     colcon build && \
 #     source install/setup.bash"\
@@ -407,7 +406,7 @@ WORKDIR /home/projects/ros2_ws
 RUN [\
     "/bin/bash", \
     "-c", \
-    "source /opt/ros/jazzy/setup.bash && \
+    "source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build && \
     source install/setup.bash"\
     ]
