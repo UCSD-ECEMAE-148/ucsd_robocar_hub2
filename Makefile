@@ -65,7 +65,7 @@ session:
 			--volume=/dev/input:/dev/input \
 			--volume=${HOME}/.Xauthority:/root/.Xauthority:rw \
 			--volume=/tmp/.X11-unix/:/tmp/.X11-unix \
-			--volume=${PWD}:/home/projects/ros2_ws/src/$${CONT_NAME} \
+			--volume=${PWD}:/home/projects/ros2_ws/src/ucsd_robocar_hub2 \
 			$${IMG_NAME} ${ENTRYPOINT}
 	else
 		xhost +
@@ -82,7 +82,7 @@ session:
 			--volume=/dev/input:/dev/input \
 		    --volume=${HOME}/.Xauthority:/root/.Xauthority:rw \
 			--volume=/tmp/.X11-unix/:/tmp/.X11-unix \
-			--volume=${PWD}:/home/projects/ros2_ws/src/$${CONT_NAME} \
+			--volume=${PWD}:/home/projects/ros2_ws/src/ucsd_robocar_hub2 \
 			$${IMG_NAME} ${ENTRYPOINT}
 	fi
 
