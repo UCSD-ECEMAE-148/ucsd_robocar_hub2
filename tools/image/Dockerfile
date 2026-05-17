@@ -80,6 +80,8 @@ RUN apt-get update && \
     python3-pip \
     python3-dev \
     nano \
+    vim \
+    net-tools \
     iputils-ping \
     x11-apps \
     nautilus \
