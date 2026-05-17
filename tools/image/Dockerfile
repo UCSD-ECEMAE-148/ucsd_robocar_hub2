@@ -3,7 +3,7 @@ ARG BASE_IMAGE=ros:jazzy-ros-base-noble
 # --------------------------------------------------------------------------------------------------------------------------------------------------
 # Getting Base image (ubuntu 22.04)
 # --------------------------------------------------------------------------------------------------------------------------------------------------
-FROM $BASE_IMAGE as ucsd_robocar2_base
+FROM $BASE_IMAGE AS ucsd_robocar2_base
 
 ARG ROS_DISTRO
 ARG ROS_SOURCE
@@ -101,7 +101,7 @@ RUN apt-get update && \
     control \
     --break-system-packages
 
-FROM ucsd_robocar2_base as ucsd_robocar2_dep
+FROM ucsd_robocar2_base AS ucsd_robocar2_dep
 
 ####################################################################################################################################################
 # Create ros2 and sensor2 workspaces and directory paths for all sensor and actuator drivers
@@ -388,7 +388,7 @@ RUN apt-get update && \
     numpy==1.26.4 \
     --break-system-packages
 
-FROM ucsd_robocar2_dep as ucsd_robocar2
+FROM ucsd_robocar2_dep AS ucsd_robocar2
 
 
 ####################################################################################################################################################
